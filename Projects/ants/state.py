@@ -4,7 +4,7 @@ class State:
     def __init__(self):
         """Create a new gamestate"""
         self.gs = {}
-
+        print("hello")
 
     def getState(self, key=None):
         if key:
@@ -13,5 +13,3 @@ class State:
 
     def updateState(self, key, val):
         self.gs[key] = val
-
-
