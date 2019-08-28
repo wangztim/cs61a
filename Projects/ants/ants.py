@@ -504,7 +504,7 @@ class QueenAnt(ScubaThrower):  # You should change this line
     number_created = 0
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 13
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 13
 
     def __init__(self, armor=1):
