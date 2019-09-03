@@ -7,62 +7,42 @@ test = {
         {
           'code': r"""
           >>> free_bacon(35)
-          4
+          c42887e7b9ffe8fc26bb57b61329f916
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
           >>> free_bacon(71)
-          2
+          872dbe4a4fe5d8451aa842c21194c866
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
-          >>> free_bacon(7)
-          1
+          >>> free_bacon(9)
+          70e71b420a966665c548a3bb2cb30d7d
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
-          >>> free_bacon(17)
-          2
+          >>> free_bacon(37)
+          c42887e7b9ffe8fc26bb57b61329f916
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
           >>> free_bacon(0)
-          1
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> free_bacon(10)
-          1
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> free_bacon(70)
-          1
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> free_bacon(99)
           10
           """,
           'hidden': False,
@@ -70,8 +50,24 @@ test = {
         },
         {
           'code': r"""
-          >>> free_bacon(57)
-          6
+          >>> free_bacon(75)
+          5
+          """,
+          'hidden': False,
+          'locked': False
+        },
+        {
+          'code': r"""
+          >>> free_bacon(99)
+          1
+          """,
+          'hidden': False,
+          'locked': False
+        },
+        {
+          'code': r"""
+          >>> free_bacon(87)
+          3
           """,
           'hidden': False,
           'locked': False

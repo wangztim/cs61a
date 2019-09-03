@@ -206,7 +206,7 @@ def compare_trace(trace, sol):
     """Compares TRACE with the SOLUTION trace, and returns the turn number
     where the two traces differ, or -1 if the traces are the same.
     """
-    if len(trace) and len(sol) and trace[-1].is_correct(sol[-1]): 
+    if len(trace) and len(sol) and trace[-1].is_correct(sol[-1]):
         # If final state is correct, don't worry about intervening steps.
         # Bad workaround for fact that we can't actually catch all cases where students call a strategy function
         # extraneous times.
@@ -273,3 +273,6 @@ def update_traces():
     import hog
     traces = make_solution_traces(hog)
     write_traces_to_file("play.sol", traces)
+
+if __name__ == '__main__':
+    update_traces()

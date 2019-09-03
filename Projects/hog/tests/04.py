@@ -1,20 +1,102 @@
 test = {
   'name': 'Question 4',
-  'points': 1,
+  'points': 2,
   'suites': [
     {
       'cases': [
         {
           'code': r"""
-          >>> is_swap(19, 91)
-          False
+          >>> is_swap(2, 4)
+          d763fd836a7bfb096222e985b161b406
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
-          >>> is_swap(19, 19)
+          >>> is_swap(22, 4)
+          d763fd836a7bfb096222e985b161b406
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(28, 4)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(124, 2)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(44, 28)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(2, 0)
+          d763fd836a7bfb096222e985b161b406
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(10, 0)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(100, 10)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(14, 2)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(27, 72)
+          bc6c4798917b91886d7fa5f56e42878f
+          # locked
+          """,
+          'hidden': False,
+          'locked': True
+        },
+        {
+          'code': r"""
+          >>> is_swap(66, 6)
           True
           """,
           'hidden': False,
@@ -22,23 +104,7 @@ test = {
         },
         {
           'code': r"""
-          >>> is_swap(123, 12)
-          False
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(1, 2)
-          False
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(12, 2)
+          >>> is_swap(11, 1)
           True
           """,
           'hidden': False,
@@ -46,57 +112,7 @@ test = {
         },
         {
           'code': r"""
-          >>> is_swap(2, 2)
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(36, 35)
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(114, 12)
-          True
-          >>> is_swap(108, 7)
-          False
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(18, 108)
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(8, 108)
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(20, 0)
-          False
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> is_swap(10, 16)
+          >>> is_swap(13, 301)
           True
           """,
           'hidden': False,
