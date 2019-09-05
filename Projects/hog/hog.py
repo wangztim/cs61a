@@ -405,7 +405,7 @@ def swap_strategy(score, opponent_score, margin=8, num_rolls=4):
                 return True
             elif (opponent_score < after_free_bacon):
                 return False
-            # If swap is same, we let function fall through to check if exceed margin.
+        # If swap is same, we let function fall through to check if exceed margin.
         return None
 
     if (is_good_swap() == True):
