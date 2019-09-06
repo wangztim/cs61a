@@ -160,9 +160,7 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
                 num_dice_rolled_prev_p1 = num_rolls
 
         if is_swap(score0, score1):
-            a = score1
-            score1 = score0
-            score0 = a
+            score0, score1 = score1, score0
 
         player = other(player)
         # END PROBLEM 5
