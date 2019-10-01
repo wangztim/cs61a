@@ -29,7 +29,7 @@ def roll_dice(num_rolls, dice=six_sided):
             pigged_out = True
         total += roll_val
 
-    if pigged_out == True:
+    if pigged_out:
         return 1
     else:
         return total
@@ -149,7 +149,7 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
         else:
             score1 += score_gained
 
-        if feral_hogs == True:
+        if feral_hogs:
             if player == 0:
                 if (abs(num_rolls - num_dice_rolled_prev_p0) == 2):
                     score0 += 3
@@ -327,11 +327,11 @@ def max_scoring_num_rolls(dice=six_sided, num_samples=1000):
     max_score = 0
     die_roll = 0
     averager = make_averaged(roll_dice, num_samples)
-    for i in range(1, 11):
-        res = averager(i, dice)
+    for num_dice in range(1, 11):
+        res = averager(num_dice, dice)
         if res > max_score:
             max_score = res
-            die_roll = i
+            die_roll = num_dice
     return die_roll
     # END PROBLEM 9
 
