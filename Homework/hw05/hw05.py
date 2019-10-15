@@ -183,11 +183,14 @@ def generate_paths(t, x):
     """
 
     "*** YOUR CODE HERE ***"
-    yield t.label
-    for b in t.branches:
-        yield b.label
-        for i in generate_paths(b, x):
-            yield i
+    current_label = t.label
+
+    if current_label == x:
+        yield [current_label]
+
+    for branch in t.branches:
+        for execution in generate_paths(branch, x):
+            yield [current_label] + execution
 
 
 def remove_all(link, value):
