@@ -120,9 +120,6 @@ def is_bst(t):
         max_label = finder(left_branch, max)
         min_label = finder(right_branch, min)
 
-        if left_branch.label > t.label or right_branch.label <= t.label:
-            return False
-
         return is_bst(t.branches[0]) and is_bst(t.branches[1]) and t.label >= max_label and t.label < min_label
 
     else:
@@ -131,10 +128,10 @@ def is_bst(t):
 
         if branch_is_left:
             max_label = finder(branch, max)
-            return t.label >= max_label and is_bst(branch)
+            return t.label >= max_label
         else:
             min_label = finder(branch, min)
-            return t.label < min_label and is_bst(branch)
+            return t.label < min_label
 
             # Link List Class
 

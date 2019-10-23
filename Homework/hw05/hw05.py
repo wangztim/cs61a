@@ -416,3 +416,30 @@ class Tree:
                 tree_str += print_tree(b, indent + 1)
             return tree_str
         return print_tree(self).rstrip()
+
+
+def multiples(k, s):
+    """Return a linked list of all multiples of k selected from digits in s.
+    >>> odds = Link(1, Link(3, Link(5, Link(7, Link(9)))))
+    >>> multiples(5, odds)
+    Link(135, Link(15, Link(35)))
+    >>> multiples(7, odds)
+    Link(1379, Link(357, Link(35)))
+    >>> multiples(9, odds)
+    Link(1359, Link(135))
+    >>> multiples(2, odds)
+    ()
+    """
+    t = Link.empty
+
+    def f(n, s):
+        nonlocal t
+        if s is Link.empty:
+            if n % k == 0 and n > k:
+                t = Link(n, t)
+        else:
+            f(n, s.rest)
+            f(n*10 + s.first, s.rest)
+
+    f(0, s)
+    return t
