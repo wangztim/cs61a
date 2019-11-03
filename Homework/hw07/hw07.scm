@@ -3,7 +3,12 @@
 ; returns the values of lst that are bigger than x
 ; e.g., (larger-values 3 '(1 2 3 4 5 1 2 3 4 5)) --> (4 5 4 5)
 (define (larger-values x lst)
-    'YOUR-CODE-HERE)
+  (
+    filter
+    (lambda (y) (> y x))
+    lst
+  )
+)
 
 (define (longest-increasing-subsequence lst)
     ; the following skeleton is optional, remove if you like
@@ -15,12 +20,15 @@
             (define large-values-rest
                 (larger-values first rest))
             (define with-first
-                'YOUR-CODE-HERE)
+                (cons first (longest-increasing-subsequence large-values-rest)))
             (define without-first
-                'YOUR-CODE-HERE)
-            (if 'YOUR-CONDITION-HERE
+                (longest-increasing-subsequence rest))
+            (if (> (length with-first) (length without-first))
                 with-first
-                without-first))))
+                without-first)
+        )
+    )
+)
 
 ; Derivative
 
@@ -69,33 +77,69 @@
 (define (multiplicand p) (caddr p))
 
 (define (derive-sum expr var)
-  'YOUR-CODE-HERE
+  (make-sum (derive (addend expr) var) (derive (augend expr) var))
 )
 
 (define (derive-product expr var)
-  'YOUR-CODE-HERE
+    (begin
+      (define first (multiplier expr))
+      (define second (multiplicand expr))
+      (define fprimeg (make-product (derive first var) second))
+      (define fgprime (make-product first (derive second var)))
+      (make-sum fprimeg fgprime)
+    )
 )
 
+(define (square x) (* x x))
+
+(define (pow b n)
+  (
+    if (= n 0)
+      1
+      (if (= n 1)
+        b
+        (if (even? n)
+          (* (square b) (
+            if (= (/ n 2) 1)
+            1
+            (pow b (/ n 2))
+            ))
+          (* (* b (square b))
+          (if (= (floor (/ n 2)) 1)
+            1
+            (pow b (floor (/ n 2)))
+          ))
+        )
+      )
+  )
+)
 ; Exponentiations are represented as lists that start with ^.
 (define (make-exp base exponent)
-  'YOUR-CODE-HERE
+  (cond
+    ((=number? exponent 0) 1)
+    ((=number? exponent 1) base)
+    ((and (number? base) (number? exponent)) (pow base exponent))
+    (else (list '^ base exponent))
+  )
 )
 
 (define (base exp)
-  'YOUR-CODE-HERE
+  (cadr exp)
 )
 
 (define (exponent exp)
-  'YOUR-CODE-HERE
+  (caddr exp)
 )
 
 (define (exp? exp)
-  'YOUR-CODE-HERE
+  (and (list? exp) (eq? (car exp) '^))
 )
 
 (define x^2 (make-exp 'x 2))
 (define x^3 (make-exp 'x 3))
 
 (define (derive-exp exp var)
-  'YOUR-CODE-HERE
+  (define base (base exp))
+  (define exponent (exponent exp))
+  (make-product exponent (make-exp base (make-sum exponent -1)))
 )
