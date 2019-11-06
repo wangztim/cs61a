@@ -2,6 +2,7 @@ import operator
 
 from utils import comma_separated
 
+
 class Expr:
     """
     When you type input into this interpreter, it is parsed (read) into an
@@ -65,6 +66,7 @@ class Expr:
         args = '(' + comma_separated([repr(arg) for arg in self.args]) + ')'
         return type(self).__name__ + args
 
+
 class Literal(Expr):
     """A literal is notation for representing a fixed value in code. In
     PyCombinator, the only literals are numbers. A `Literal` should always
@@ -72,6 +74,7 @@ class Literal(Expr):
 
     The `value` attribute contains the fixed value the `Literal` refers to.
     """
+
     def __init__(self, value):
         Expr.__init__(self, value)
         self.value = value
@@ -82,6 +85,7 @@ class Literal(Expr):
     def __str__(self):
         return str(self.value)
 
+
 class Name(Expr):
     """A `Name` is a variable. When evaluated, we look up the value of the
     variable in the current environment.
@@ -89,6 +93,7 @@ class Name(Expr):
     The `string` attribute contains the name of the variable (as a Python
     string).
     """
+
     def __init__(self, string):
         Expr.__init__(self, string)
         self.string = string
@@ -110,9 +115,15 @@ class Name(Expr):
         Exception raised!
         """
         "*** YOUR CODE HERE ***"
+        if self.string in env:
+            return env[self.string]
+        else:
+            raise NameError(
+                self.string + " does not exist in the current environment")
 
     def __str__(self):
         return self.string
+
 
 class LambdaExpr(Expr):
     """A lambda expression, which evaluates to a `LambdaFunction`.
@@ -127,6 +138,7 @@ class LambdaExpr(Expr):
     where `parameters` is the list ['x', 'y'] and `body` is the expression
     CallExpr('add', [Name('x'), Name('y')]).
     """
+
     def __init__(self, parameters, body):
         Expr.__init__(self, parameters, body)
         self.parameters = parameters
@@ -142,6 +154,7 @@ class LambdaExpr(Expr):
         else:
             return 'lambda ' + comma_separated(self.parameters) + ': ' + body
 
+
 class CallExpr(Expr):
     """A call expression represents a function call.
 
@@ -154,6 +167,7 @@ class CallExpr(Expr):
 
     where `operator` is Name('add') and `operands` are [Literal(3), Literal(4)].
     """
+
     def __init__(self, operator, operands):
         Expr.__init__(self, operator, operands)
         self.operator = operator
@@ -176,6 +190,9 @@ class CallExpr(Expr):
         Number(14)
         """
         "*** YOUR CODE HERE ***"
+        evaluated_operator = self.operator.eval(env)
+        evaluated_operands = [operand.eval(env) for operand in self.operands]
+        return evaluated_operator.apply(evaluated_operands)
 
     def __str__(self):
         function = str(self.operator)
@@ -184,6 +201,7 @@ class CallExpr(Expr):
             return '(' + function + ')' + args
         else:
             return function + args
+
 
 class Value:
     """
@@ -231,12 +249,14 @@ class Value:
         args = '(' + comma_separated([repr(arg) for arg in self.args]) + ')'
         return type(self).__name__ + args
 
+
 class Number(Value):
     """A plain number. Attempting to apply a `Number` (e.g. as in 4(2, 3)) will
     raise an exception.
 
     The `value` attribute is the Python number that this represents.
     """
+
     def __init__(self, value):
         Value.__init__(self, value)
         self.value = value
@@ -248,6 +268,7 @@ class Number(Value):
     def __str__(self):
         return str(self.value)
 
+
 class LambdaFunction(Value):
     """A lambda function. Lambda functions are created in the LambdaExpr.eval
     method. A lambda function is a lambda expression that knows the
@@ -258,6 +279,7 @@ class LambdaFunction(Value):
     The `parent` attribute is an environment, a dictionary with variable names
         (strings) as keys and instances of the class Value as values.
     """
+
     def __init__(self, parameters, body, parent):
         Value.__init__(self, parameters, body, parent)
         self.parameters = parameters
@@ -286,10 +308,17 @@ class LambdaFunction(Value):
             raise TypeError("Cannot match parameters {} to arguments {}".format(
                 comma_separated(self.parameters), comma_separated(arguments)))
         "*** YOUR CODE HERE ***"
+        env_copy = self.parent.copy()
+        for i in range(len(self.parameters)):
+            param = self.parameters[i]
+            arg = arguments[i]
+            env_copy[param] = arg
+        return self.body.eval(env_copy)
 
     def __str__(self):
         definition = LambdaExpr(self.parameters, self.body)
         return '<function {}>'.format(definition)
+
 
 class PrimitiveFunction(Value):
     """A built-in function. For a full list of built-in functions, see
@@ -298,6 +327,7 @@ class PrimitiveFunction(Value):
     The `operator` attribute is a Python function takes Python numbers and
     returns a Python number.
     """
+
     def __init__(self, operator):
         Value.__init__(self, operator)
         self.operator = operator
@@ -311,6 +341,7 @@ class PrimitiveFunction(Value):
 
     def __str__(self):
         return '<primitive function {}>'.format(self.operator.__name__)
+
 
 # The environment that the REPL evaluates expressions in.
 global_env = {
