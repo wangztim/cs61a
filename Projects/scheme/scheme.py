@@ -385,6 +385,17 @@ def do_define_macro(expressions, env):
     """Evaluate a define-macro form."""
     # BEGIN Problem 20
     "*** YOUR CODE HERE ***"
+    check_form(expressions, 2)
+    target = expressions.first
+    name = target.first
+    params = target.rest
+    body = expressions.rest
+    # BEGIN PROBLEM 15
+    "*** YOUR CODE HERE ***"
+    macro = MacroProcedure(params, body, env)
+    macro.apply_macro()
+    env.define(name, macro)
+    return target.first
     # END Problem 20
 
 
