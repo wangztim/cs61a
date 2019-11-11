@@ -36,9 +36,18 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
         "*** YOUR CODE HERE ***"
         evaluated_operator = scheme_eval(first, env)
         check_procedure(evaluated_operator)
-        evaluated_operands = rest.map(
-            lambda operand: scheme_eval(operand, env))
-        return scheme_apply(evaluated_operator, evaluated_operands, env)
+        if isinstance(evaluated_operator, MacroProcedure):
+            evaluated_macro = evaluated_operator.apply_macro(rest, env)
+            macro_operator = evaluated_macro.first
+            macro_operands = evaluated_macro.rest
+            evaluated_m_operator = scheme_eval(macro_operator, env)
+            evaluated_m_operands = macro_operands.map(
+                lambda operand: scheme_eval(operand, env))
+            return complete_apply(evaluated_m_operator, evaluated_m_operands, env)
+        else:
+            evaluated_operands = rest.map(
+                lambda operand: scheme_eval(operand, env))
+        return complete_apply(evaluated_operator, evaluated_operands, env)
         # END PROBLEM 4
 
 
@@ -385,17 +394,20 @@ def do_define_macro(expressions, env):
     """Evaluate a define-macro form."""
     # BEGIN Problem 20
     "*** YOUR CODE HERE ***"
+
     check_form(expressions, 2)
     target = expressions.first
-    name = target.first
-    params = target.rest
-    body = expressions.rest
-    # BEGIN PROBLEM 15
-    "*** YOUR CODE HERE ***"
-    macro = MacroProcedure(params, body, env)
-    macro.apply_macro()
-    env.define(name, macro)
-    return target.first
+    if isinstance(target, Pair) and scheme_symbolp(target.first):
+        name = target.first
+        formals = target.rest
+        body = expressions.rest
+
+        macro = MacroProcedure(formals, body, env)
+        env.define(name, macro)
+        return name
+    else:
+        bad_target = target.first if isinstance(target, Pair) else target
+        raise SchemeError('non-symbol: {0}'.format(bad_target))
     # END Problem 20
 
 
@@ -616,6 +628,11 @@ def optimize_tail_calls(original_scheme_eval):
         result = Thunk(expr, env)
         # BEGIN
         "*** YOUR CODE HERE ***"
+        while isinstance(result, Thunk):
+            evaluated_expr = original_scheme_eval(result.expr)
+            result = optimized_eval(evaluated_expr, result.env)
+
+        return result
         # END
     return optimized_eval
 
