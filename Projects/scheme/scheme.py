@@ -43,11 +43,11 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
             evaluated_m_operator = scheme_eval(macro_operator, env)
             evaluated_m_operands = macro_operands.map(
                 lambda operand: scheme_eval(operand, env))
-            return complete_apply(evaluated_m_operator, evaluated_m_operands, env)
+            return scheme_apply(evaluated_m_operator, evaluated_m_operands, env)
         else:
             evaluated_operands = rest.map(
                 lambda operand: scheme_eval(operand, env))
-        return complete_apply(evaluated_operator, evaluated_operands, env)
+        return scheme_apply(evaluated_operator, evaluated_operands, env)
         # END PROBLEM 4
 
 
@@ -81,6 +81,7 @@ def eval_all(expressions, env):
             return evaluated_expression
         else:
             expressions = expressions.rest
+
     # END PROBLEM 7
 
 ################
@@ -305,9 +306,9 @@ def do_if_form(expressions, env):
     """Evaluate an if form."""
     check_form(expressions, 2, 3)
     if scheme_truep(scheme_eval(expressions.first, env)):
-        return scheme_eval(expressions.rest.first, env)
+        return scheme_eval(expressions.rest.first, env, True)
     elif len(expressions) == 3:
-        return scheme_eval(expressions.rest.rest.first, env)
+        return scheme_eval(expressions.rest.rest.first, env, True)
 
 
 def do_and_form(expressions, env):
@@ -626,21 +627,25 @@ def optimize_tail_calls(original_scheme_eval):
             return Thunk(expr, env)
 
         result = Thunk(expr, env)
+        times_called = 0
         # BEGIN
         "*** YOUR CODE HERE ***"
         while isinstance(result, Thunk):
-            evaluated_expr = original_scheme_eval(result.expr)
-            result = optimized_eval(evaluated_expr, result.env)
+            result = original_scheme_eval(result.expr, result.env)
+            times_called += 1
+            if isinstance(result, Thunk):
+                print("DEBUG:", result.expr, times_called, result.env)
 
         return result
-        # END
+    
+                # END
     return optimized_eval
 
 
 ################################################################
 # Uncomment the following line to apply tail call optimization #
 ################################################################
-# scheme_eval = optimize_tail_calls(scheme_eval)
+scheme_eval = optimize_tail_calls(scheme_eval)
 
 
 ####################
