@@ -47,7 +47,7 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
         else:
             evaluated_operands = rest.map(
                 lambda operand: scheme_eval(operand, env))
-        return scheme_apply(evaluated_operator, evaluated_operands, env)
+            return scheme_apply(evaluated_operator, evaluated_operands, env)
         # END PROBLEM 4
 
 
@@ -71,17 +71,16 @@ def eval_all(expressions, env):
     """Evaluate each expression in the Scheme list EXPRESSIONS in
     environment ENV and return the value of the last."""
     # BEGIN PROBLEM 7
+
     if expressions == nil:
         return None
 
-    while expressions != nil:
-        evaluated_expression = scheme_eval(expressions.first, env)
+    elif expressions.rest is nil:  # Tail context
+        return scheme_eval(expressions.first, env, True)
 
-        if expressions.rest == nil:
-            return evaluated_expression
-        else:
-            expressions = expressions.rest
-
+    else:
+        scheme_eval(expressions.first, env)
+        return eval_all(expressions.rest, env)
     # END PROBLEM 7
 
 ################
@@ -322,7 +321,7 @@ def do_and_form(expressions, env):
         if not test and test is not 0:
             return False
         expressions = expressions.rest
-    return scheme_eval(expressions.first, env)
+    return scheme_eval(expressions.first, env, True)
     # END PROBLEM 12
 
 
@@ -331,12 +330,13 @@ def do_or_form(expressions, env):
     # BEGIN PROBLEM 12
     if expressions == nil:
         return False
-    while expressions != nil:
+
+    while expressions.rest != nil:
         test = scheme_eval(expressions.first, env)
         if test or test is 0:
-            return scheme_eval(expressions.first, env)
+            return scheme_eval(expressions.first, env, True)
         expressions = expressions.rest
-    return False
+    return scheme_eval(expressions.first, env, True)
     # END PROBLEM 12
 
 
@@ -626,19 +626,18 @@ def optimize_tail_calls(original_scheme_eval):
         if tail and not scheme_symbolp(expr) and not self_evaluating(expr):
             return Thunk(expr, env)
 
+        if scheme_symbolp(expr) or self_evaluating(expr):
+            return original_scheme_eval(expr, env)
+
         result = Thunk(expr, env)
-        times_called = 0
         # BEGIN
         "*** YOUR CODE HERE ***"
         while isinstance(result, Thunk):
+            # ! ARE YOU KIDDING ME ITS ACTUALLY JUST A LOOP OML
             result = original_scheme_eval(result.expr, result.env)
-            times_called += 1
-            if isinstance(result, Thunk):
-                print("DEBUG:", result.expr, times_called, result.env)
-
         return result
-    
-                # END
+
+        # END
     return optimized_eval
 
 
