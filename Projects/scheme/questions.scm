@@ -91,8 +91,7 @@
          )
         ((quoted? expr)
          ; BEGIN PROBLEM 18
-         (define quote `quote)
-         (cons quote (let-to-lambda (cdr expr)))
+         expr
          ; END PROBLEM 18
          )
         ((or (lambda? expr)
@@ -101,7 +100,7 @@
                (params (cadr expr))
                (body   (cddr expr)))
           ; BEGIN PROBLM 18
-              (define mapped-body (map (lambda (x) (let-to-lambda x)) body))
+              (define mapped-body (map let-to-lambda  body))
               (define func `(,form ,params))
               (append func mapped-body)
            ; END PROBLEM 18
@@ -113,8 +112,8 @@
             (define zipped (zip values))
             (define args (car zipped))
             (define params (cadr zipped))
-            (define mapped-params (map (lambda (x) (let-to-lambda x)) params))
-            (define mapped-body (map (lambda (x) (let-to-lambda x)) body))
+            (define mapped-params (map let-to-lambda params))
+            (define mapped-body (map let-to-lambda body))
             (define func `(lambda ,args ,(car mapped-body)))
             (cons func mapped-params)
            ; END PROBLEM 18
@@ -123,7 +122,7 @@
          ; BEGIN PROBLEM 18
          (define operator (car expr))
          (define body (cdr expr))
-         (define mapped-body (map (lambda (x) (let-to-lambda x)) body))
+         (define mapped-body (map let-to-lambda body))
          (cons operator mapped-body)
          ; END PROBLEM 18
          )))
