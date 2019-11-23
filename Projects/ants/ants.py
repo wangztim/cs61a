@@ -46,9 +46,9 @@ class Place(object):
             else:
                 # BEGIN Problem 9
                 if self.ant:
-                    if self.ant.is_container and self.ant.can_contain(insect):
+                    if self.ant.can_contain(insect):
                         self.ant.contain_ant(insect)
-                    elif insect.is_container and insect.can_contain(self.ant):
+                    elif insect.can_contain(self.ant):
                         insect.contain_ant(self.ant)
                         self.ant = insect
                     else:
@@ -84,7 +84,7 @@ class Place(object):
                     self.ant = None
             else:
                 # Contained ant was removed. Bodyguard should remain
-                if hasattr(self.ant, 'is_container') and self.ant.is_container \
+                if hasattr(self.ant, 'is_container') \
                         and self.ant.contained_ant is insect:
                     if insect_is_true_queen(self.ant.contained_ant):
                         pass
@@ -239,12 +239,8 @@ class ThrowerAnt(Ant):
     implemented = True
     food_cost = 3
     damage = 1
-
-    def __init__(self, min_range=-float('inf'), max_range=float('inf'), armor=1):
-        """Create an Ant with an ARMOR quantity."""
-        super().__init__(armor=armor)
-        self.min_range = min_range
-        self.max_range = max_range
+    min_range = -float('inf')
+    max_range = float('inf')
 
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
 
@@ -300,11 +296,8 @@ class ShortThrower(ThrowerAnt):
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
     implemented = True   # Change to True to view in the GUI
+    max_range = 3
     # END Problem 4
-
-    def __init__(self):
-        """Create an Ant with an ARMOR quantity."""
-        super().__init__(max_range=3)
 
 
 class LongThrower(ThrowerAnt):
@@ -315,11 +308,8 @@ class LongThrower(ThrowerAnt):
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
     implemented = True   # Change to True to view in the GUI
+    min_range = 5
     # END Problem 4
-
-    def __init__(self):
-        """Create an Ant with an ARMOR quantity."""
-        super().__init__(min_range=5)
 
 
 class FireAnt(Ant):
@@ -447,7 +437,7 @@ class BodyguardAnt(Ant):
     def can_contain(self, other):
         # BEGIN Problem 9
         "*** YOUR CODE HERE ***"
-        return other.is_container == False and self.contained_ant == None
+        return not other.is_container and not self.contained_ant
         # END Problem 9
 
     def contain_ant(self, ant):

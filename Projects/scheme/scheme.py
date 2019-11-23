@@ -318,7 +318,7 @@ def do_and_form(expressions, env):
         return True
     while expressions.rest != nil:
         test = scheme_eval(expressions.first, env)
-        if not test and test is not 0:
+        if not scheme_truep(test):
             return False
         expressions = expressions.rest
     return scheme_eval(expressions.first, env, True)
@@ -333,7 +333,7 @@ def do_or_form(expressions, env):
 
     while expressions.rest != nil:
         test = scheme_eval(expressions.first, env)
-        if test or test is 0:
+        if scheme_truep(test):
             return scheme_eval(expressions.first, env, True)
         expressions = expressions.rest
     return scheme_eval(expressions.first, env, True)
@@ -387,7 +387,6 @@ def make_let_frame(bindings, env):
     check_formals(formals)
     return env.make_child_frame(formals, values)
 
-    # return env.make_child_frame()
     # END PROBLEM 14
 
 
